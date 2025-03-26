@@ -310,7 +310,6 @@ public class AdminController {
         }
         return ResponseEntity.badRequest().body(Map.of("message","Invalid Credentials"));
     }
-    // ✅ User Requests to Return Key
     @PostMapping("/request-key-return")
     public ResponseEntity<?> requestKeyReturn(@RequestBody KeyBorrow returnRequest) {
         Optional<KeyBorrow> borrowRequestOpt = keyBorrowRepository
@@ -331,7 +330,6 @@ public class AdminController {
         return ResponseEntity.badRequest().body(Map.of("message", "No active borrow request found for this key."));
     }
 
-    // ✅ Admin Approves Key Return
     @PostMapping("/approve-key-return/{id}")
     public ResponseEntity<?> approveKeyReturn(@PathVariable Long id) {
         Optional<KeyBorrow> borrowRequestOpt = keyBorrowRepository.findById(id);
@@ -348,10 +346,10 @@ public class AdminController {
                 key.setStatus("Available");
                 key.setStartTime(null);
                 key.setEndTime(null);
+                key.setOwner("Admin");
                 keyRepository.save(key);
             }
 
-            // ✅ Notify User via WebSockets
             messagingTemplate.convertAndSend("/topic/user/" + borrowRequest.getBorrowerEmail(),
                     Map.of("message", "Your key return request has been approved.", "status", "Returned"));
 
@@ -360,16 +358,13 @@ public class AdminController {
         return ResponseEntity.badRequest().body(Map.of("message", "Return request not found."));
     }
 
-    // ✅ Admin Denies Key Return
     @PostMapping("/deny-key-return/{id}")
     public ResponseEntity<?> denyKeyReturn(@PathVariable Long id) {
         Optional<KeyBorrow> borrowRequestOpt = keyBorrowRepository.findByIdAndStatus(id,"Return Requested");
         if (borrowRequestOpt.isPresent() && "Return Requested".equals(borrowRequestOpt.get().getStatus())) {
             KeyBorrow borrowRequest = borrowRequestOpt.get();
-            borrowRequest.setStatus("Return Denied");
+            borrowRequest.setStatus("Approved");
             keyBorrowRepository.save(borrowRequest);
-
-            // ✅ Notify User via WebSockets
             messagingTemplate.convertAndSend("/topic/user/" + borrowRequest.getBorrowerEmail(),
                     Map.of("message", "Your key return request has been denied.", "status", "Return Denied"));
 
