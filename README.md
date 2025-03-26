@@ -23,8 +23,8 @@ The **Classroom & Cycle Management System** is a web application designed to str
   ```
 ## Tech Stack
 ### Frontend
-- React.js
-- Tailwind CSS
+- Angular.js
+- Bootstrap CSS
 
 ### Backend
 - Spring Boot
@@ -64,7 +64,7 @@ Ensure you have the following installed:
    mvn spring-boot:run
    ```
 
-#### **3. Frontend Setup (React.js):**
+#### **3. Frontend Setup (Angular.js):**
 1. Navigate to the frontend directory:
    ```sh
    cd frontend
@@ -75,28 +75,9 @@ Ensure you have the following installed:
    ```
 3. Start the development server:
    ```sh
-   npm start
+   ng serve
    ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Folder Structure
-```
-classroom-cycle-management/
-│-- backend/
-│   ├── src/
-│   ├── pom.xml (Maven configuration)
-│   ├── application.properties
-│-- frontend/
-│   ├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── styles/
-│   ├── App.js
-│   ├── index.js
-│   ├── package.json
-│-- public/
-│-- README.md
-```
+4. Open (http://localhost:4200) in your browser.
 
 ## Contributing
 1. Fork the repository.
