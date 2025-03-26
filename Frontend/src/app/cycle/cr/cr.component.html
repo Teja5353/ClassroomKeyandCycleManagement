@@ -1,8 +1,8 @@
 <body>
   <app-navbar-loggedin></app-navbar-loggedin>
   <div class="container">
-    <h2 class="title"><i class="fas fa-bell"></i> Your Borrow Requests</h2>
-    <p class="subtitle">Check the status of your borrow requests for cycles and keys.</p>
+    <h2 class="title"><i class="fas fa-bell"></i> Borrow Requests</h2>
+    <p class="subtitle">Manage and track cycle and key borrow requests.</p>
 
     <!-- Search and Filter Controls -->
     <div class="controls d-flex">
@@ -56,11 +56,40 @@
              [ngClass]="request.type === 'cycle' ? 'fa-bicycle' : 'fa-key'">
           </i>
           <span class="request-name">
-            {{ request.type === 'cycle' ? 'Cycle' : 'Key' }} {{ request.type === 'cycle' ? request.cycleId : request.location+ " " + request.keyId }}
+            {{ request.type === 'cycle' ? 'Cycle' : 'Key' }} 
+            {{ request.type === 'cycle' ? request.cycleId : request.location + " " + request.keyId }}
           </span>
           <span class="status-badge">{{ request.status }}</span>
         </div>
+        
         <p class="timestamp">Requested on: {{ request.requestTime | date:'medium' }}</p>
+
+        <!-- Distinguish Incoming vs Outgoing Requests -->
+        <p class="request-direction" [ngClass]="{'outgoing': request.direction === 'outgoing', 'incoming': request.direction === 'incoming'}">
+          {{ request.direction === 'incoming' 
+              ? 'Request from ' + request.borrowerEmail 
+              : 'You requested key from: ' + (request.borrowFrom ? request.borrowFrom : "Admin") }}
+        </p>
+
+        <!-- Approve/Deny Buttons for Incoming Requests -->
+        <div class="actions" *ngIf="request.status === 'Pending' && request.direction === 'incoming'">
+          <button class="btn btn-danger" (click)="denyRequest(request.id)">
+            <i class="fas fa-times"></i> Deny
+          </button>
+          <button class="btn btn-success" (click)="approveRequest(request.id)">
+            <i class="fas fa-check"></i> Approve
+          </button>
+        </div>
+
+        <!-- Approve/Deny Return Buttons for Return Requests -->
+        <div class="actions" *ngIf="request.status === 'Return Requested' && request.direction === 'incoming'">
+          <button class="btn btn-danger" (click)="denyKeyReturn(request.id, request.keyId)">
+            <i class="fas fa-times"></i> Deny Return
+          </button>
+          <button class="btn btn-success" (click)="approveReturnKey(request.id, request.keyId)">
+            <i class="fas fa-check"></i> Approve Return
+          </button>
+        </div>
       </li>
     </ul>
   </div>

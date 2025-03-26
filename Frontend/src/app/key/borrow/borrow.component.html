@@ -1,5 +1,4 @@
 <app-navbar-loggedin></app-navbar-loggedin>
-
 <div class="container mt-4">
   <h2 class="text-center">Borrow a Key</h2>
 
@@ -7,7 +6,7 @@
     <strong>Access Denied:</strong> Only Class Representatives (CRs) and Admins can borrow keys.
   </div>
 
-  <div class="row justify-content-center" *ngIf="role === 'cr' || role === 'admin'">
+  <div class="row" *ngIf="role === 'cr' || role === 'admin'">
     <div class="col-md-6">
       <div class="card shadow-sm p-4">
         <form (ngSubmit)="requestBorrow()">
@@ -34,10 +33,9 @@
           <!-- Duration Input -->
           <label>Start Time:</label>
           <input type="time" class="form-control" [(ngModel)]="startTime" name="startTime" required />
-                <p>Start Time: {{ startTime }}</p>
                 <label>End Time:</label>
                 <input type="time" class="form-control" [(ngModel)]="endTime" name="endTime" required />
-                <p>End Time: {{ endTime }}</p>
+                
           <!-- Borrow From Selection -->
           <div class="mb-3">
             <label class="form-label">Borrow From</label>
@@ -51,5 +49,9 @@
         </form>
       </div>
     </div>
+    <div class="col-md-6">
+      <app-key-list></app-key-list>
+    </div>
+    
   </div>
 </div>

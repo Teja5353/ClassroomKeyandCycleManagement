@@ -18,7 +18,7 @@ export class returnComponent implements OnInit {
   userEmail: string | null = null;
   borrowedKeys: any[] = [];
   role: string = '';
-
+  returnTo : string = 'admin';
   constructor(
     private http: HttpClient,
     private webSocketService: WebSocketService,
@@ -71,7 +71,8 @@ export class returnComponent implements OnInit {
     const requestData = { keyId: this.selectedKeyId, borrowerEmail: this.userEmail };
     this.toast.info('Sending return request...');
 
-    this.http.post('http://localhost:8082/admin/request-key-return', requestData, this.getHttpOptions())
+    if(this.returnTo == 'admin'){
+      this.http.post('http://localhost:8082/admin/request-key-return', requestData, this.getHttpOptions())
       .subscribe({
         next: () => {
           this.toast.success(`Return request sent for key: ${this.selectedKeyId}`);
@@ -84,5 +85,21 @@ export class returnComponent implements OnInit {
           this.toast.error('Could not request key return.');
         }
       });
+    }
+    else{
+      this.http.post('http://localhost:8082/cr/request-key-return', requestData, this.getHttpOptions())
+      .subscribe({
+        next: () => {
+          this.toast.success(`Return request sent for key: ${this.selectedKeyId}`);
+          this.fetchBorrowedKeys(); // ✅ Refresh borrowed keys list
+          if (this.role) {
+            this.router.navigate([`${this.role}/dashboard`]);
+          }
+        },
+        error: () => {
+          this.toast.error('Could not request key return.');
+        }
+      });
+    }
   }
 }

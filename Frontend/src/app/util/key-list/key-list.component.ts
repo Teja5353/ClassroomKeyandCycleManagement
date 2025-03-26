@@ -12,10 +12,11 @@ import { CommonModule } from '@angular/common';
 })
 export class KeyListComponent implements OnInit {
   keys: any[] = [];
-
+  role = "";
   constructor(private http: HttpClient, private toast: ToastrService) {}
 
   ngOnInit(): void {
+    this.role = localStorage.getItem('role')?.toLowerCase() || 'user';
     this.fetchKeys();
   }
 
@@ -28,8 +29,8 @@ export class KeyListComponent implements OnInit {
       })
     };
   }
-  deleteKey(keyId: string) {
-    this.http.delete(`http://localhost:8082/keys/${keyId}`, this.getHttpOptions()).subscribe({
+  deleteKey(keyId: string,location: string) {
+    this.http.post(`http://localhost:8082/keys/delete`,{keyId:keyId,location:location}, this.getHttpOptions()).subscribe({
       next: () => {
         this.toast.success('Key deleted successfully.');
         this.fetchKeys();

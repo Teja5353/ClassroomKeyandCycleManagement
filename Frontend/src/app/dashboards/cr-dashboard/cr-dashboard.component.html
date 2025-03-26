@@ -4,7 +4,7 @@
   <div class="container-fluid p-0 m-0 pt-1">
     <!-- Full-Screen Dashboard -->
     <div class="dashboard d-flex flex-column align-items-center">
-      <h1 class="text-center welcome-text">Welcome!!!</h1>
+      <h1 class="text-center welcome-text">Welcome {{firstName}} {{lastName}}!!!</h1>
 
       <!-- Allocated Resources & Action Buttons Side by Side -->
       <div class="row w-100 justify-content-center mt-4">
@@ -16,8 +16,9 @@
             </div>
             <div class="card-body">
               <ul class="list-group">
-                <li *ngFor="let resource of allocatedResources" class="list-group-item">
-                  <strong>{{ resource.room }}</strong> - at <span class="text-muted">{{ resource.time }}</span>
+                <span *ngIf="borrowRequests.length===0" class="text-center"><strong>No Resources Allocated!!</strong></span>
+                <li *ngFor="let resource of borrowRequests" class="list-group-item">
+                  <span *ngIf="resource.keyId"><strong>{{resource.location}} - {{resource.keyId}}</strong> borrowed from {{resource.startTime}} to {{resource.endTime}}</span> 
                 </li>
               </ul>
             </div>

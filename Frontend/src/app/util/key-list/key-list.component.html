@@ -12,7 +12,9 @@
               <th>Key ID</th>
               <th>Location</th>
               <th>Borrowed By</th>
-              <th>Action</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th *ngIf="role==='admin'">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -20,9 +22,11 @@
               <td>{{ i + 1 }}</td>
               <td>{{ key.keyId }}</td>
               <td>{{ key.location }}</td>
+              <td>{{key.startTime || 'Not Borrowed'}}</td>
+              <td>{{key.endTime || 'Not borrowed'}}</td>
               <td>{{ key.borrowedBy || 'Not borrowed' }}</td>
               <td>
-                <button class="btn btn-danger" (click)="deleteKey(key.keyId)">
+                <button class="btn btn-danger" (click)="deleteKey(key.keyId,key.location)" *ngIf="role==='admin'">
                   Delete Key
                 </button>
               </td>

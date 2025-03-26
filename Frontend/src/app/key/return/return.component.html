@@ -6,13 +6,22 @@
 
     <div *ngIf="borrowedKeys.length > 0; else noKeys">
       <!-- 🔹 Key Selection -->
-      <div class="mb-4">
+      <div class="mb-3">
         <label for="keySelect" class="form-label fw-bold">Select a Key:</label>
-        <select class="form-select custom-select" [(ngModel)]="selectedKeyId" id="keySelect">
+        <select class="form-select" [(ngModel)]="selectedKeyId" id="keySelect">
           <option value="" disabled selected>-- Choose a key --</option>
           <option *ngFor="let key of borrowedKeys" [value]="key.keyId">
             {{ key.keyId }} - {{ key.location }}
           </option>
+        </select>
+      </div>
+
+      <!-- 🔹 Return To Selection (Admin + CRs) -->
+      <div class="mb-3" *ngIf="role === 'cr'">
+        <label for="returnToSelect" class="form-label fw-bold">Return To:</label>
+        <select class="form-select" [(ngModel)]="returnTo" id="returnToSelect">
+          <option value="admin">Admin</option>
+          <option  value="CR">Another CR</option>
         </select>
       </div>
 

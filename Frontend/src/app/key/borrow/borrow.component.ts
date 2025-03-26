@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavbarLoggedComponent } from '../../navbar_loggedin/navbar_loggedin.component';
+import { KeyListComponent } from "../../util/key-list/key-list.component";
 @Component({
   selector: 'app-borrow',
   templateUrl: './borrow.component.html',
   styleUrls: ['./borrow.component.css'],
-  imports: [FormsModule, CommonModule,NavbarLoggedComponent]
+  imports: [FormsModule, CommonModule, NavbarLoggedComponent, KeyListComponent]
 })
 export class borrowComponent implements OnInit {
   selectedLocation: string = '';
@@ -68,7 +69,7 @@ export class borrowComponent implements OnInit {
   loadKeys() {
     this.http.get<any[]>('http://localhost:8082/keys/all', this.getHttpOptions()).subscribe(
       (data) => {
-        this.availableKeys = data.filter(key => key.status === 'Available');
+        this.availableKeys = data;
         
         // Extract unique locations
         this.locations = [...new Set(this.availableKeys.map(key => key.location))];
