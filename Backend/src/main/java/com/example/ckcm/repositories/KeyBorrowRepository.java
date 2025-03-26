@@ -13,4 +13,10 @@ public interface KeyBorrowRepository extends JpaRepository<KeyBorrow,Long> {
     List<KeyBorrow> findByBorrowerEmail(String borrowerEmail);
     List<KeyBorrow> findByBorrowerEmailAndStatus(String borrowerEmail,String status);
     Optional<KeyBorrow> findByKeyIdAndBorrowerEmailAndStatus(String keyId,String borrowerEmail,String status);
+
+    Optional<KeyBorrow> findByIdAndStatus(Long id, String returnRequested);
+
+    List<KeyBorrow> findByBorrowFrom(String email);
+
+    Optional<KeyBorrow> findByKeyIdAndBorrowFromAndStatus(String keyId, String borrowerEmail, String status);
 }

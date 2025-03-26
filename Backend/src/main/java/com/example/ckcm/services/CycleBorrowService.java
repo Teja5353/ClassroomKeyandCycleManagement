@@ -15,48 +15,48 @@ import java.util.Optional;
 public class CycleBorrowService {
     private final CycleRepository cycleRepository;
     private final UserRepository userRepository;
-    public String borrowCycleById(String emailId, String cycleId){
-        Optional<User> userOpt = userRepository.findByEmail(emailId);
-        Optional<Cycle> cycleOpt = cycleRepository.findByCycleId(cycleId);
-        if(userOpt.isPresent() && cycleOpt.isPresent()){
-            if(cycleOpt.get().getBorrowedBy() == null){
-                User user  = userOpt.get();
-                Cycle cycle = cycleOpt.get();
-                if(cycleRepository.findByBorrowedBy(emailId).isPresent()){
-                    return "You have already borrowed a cycle, Please return the cycle to borrow another one";
-                }
-                if(!cycle.getStatus().equals("Available")){
-                    return "Cycle is not available";
-                }
-                cycle.setStatus("Borrowed");
-                cycle.setBorrowedBy(user.getEmail());
-                cycleRepository.save(cycle);
-                return "Cycle borrowed successfully";
-            }
-        }
-        return "Cycle or User not found";
-    }
-    public String borrowCycleByQr(String emailId, String qrCode){
-        Optional<User> userOpt = userRepository.findByEmail(emailId);
-        Optional<Cycle> cycleOpt = cycleRepository.findByQrCode(qrCode);
-        if(userOpt.isPresent() && cycleOpt.isPresent()){
-            if(cycleOpt.get().getBorrowedBy() == null){
-                User user  = userOpt.get();
-                Cycle cycle = cycleOpt.get();
-                if(cycleRepository.findByBorrowedBy(emailId).isPresent()){
-                    return "You have already borrowed a cycle, Please return the cycle to borrow another one";
-                }
-                if(!cycle.getStatus().equals("Available")){
-                    return "Cycle is not available";
-                }
-                cycle.setStatus("Borrowed");
-                cycle.setBorrowedBy(user.getEmail());
-                cycleRepository.save(cycle);
-                return "Cycle borrowed successfully";
-            }
-        }
-        return "Invalid QR code or User not found";
-    }
+//    public String borrowCycleById(String emailId, String cycleId){
+//        Optional<User> userOpt = userRepository.findByEmail(emailId);
+//        Optional<Cycle> cycleOpt = cycleRepository.findByCycleId(cycleId);
+//        if(userOpt.isPresent() && cycleOpt.isPresent()){
+//            if(cycleOpt.get().getBorrowedBy() == null){
+//                User user  = userOpt.get();
+//                Cycle cycle = cycleOpt.get();
+//                if(cycleRepository.findByBorrowedBy(emailId).isPresent()){
+//                    return "You have already borrowed a cycle, Please return the cycle to borrow another one";
+//                }
+//                if(!cycle.getStatus().equals("Available")){
+//                    return "Cycle is not available";
+//                }
+//                cycle.setStatus("Borrowed");
+//                cycle.setBorrowedBy(user.getEmail());
+//                cycleRepository.save(cycle);
+//                return "Cycle borrowed successfully";
+//            }
+//        }
+//        return "Cycle or User not found";
+//    }
+//    public String borrowCycleByQr(String emailId, String qrCode){
+//        Optional<User> userOpt = userRepository.findByEmail(emailId);
+//        Optional<Cycle> cycleOpt = cycleRepository.findByQrCode(qrCode);
+//        if(userOpt.isPresent() && cycleOpt.isPresent()){
+//            if(cycleOpt.get().getBorrowedBy() == null){
+//                User user  = userOpt.get();
+//                Cycle cycle = cycleOpt.get();
+//                if(cycleRepository.findByBorrowedBy(emailId).isPresent()){
+//                    return "You have already borrowed a cycle, Please return the cycle to borrow another one";
+//                }
+//                if(!cycle.getStatus().equals("Available")){
+//                    return "Cycle is not available";
+//                }
+//                cycle.setStatus("Borrowed");
+//                cycle.setBorrowedBy(user.getEmail());
+//                cycleRepository.save(cycle);
+//                return "Cycle borrowed successfully";
+//            }
+//        }
+//        return "Invalid QR code or User not found";
+//    }
     public String returnCycleByQr(String qrCode, String emailId){
         Optional<Cycle> cycleOpt = cycleRepository.findByQrCode(qrCode);
         if(cycleOpt.isPresent()){

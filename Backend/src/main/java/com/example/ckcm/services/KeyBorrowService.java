@@ -23,34 +23,34 @@ public class KeyBorrowService {
     private final UserRepository userRepository;
     private final KeyBorrowRepository keyBorrowRepository;
 
-    public String requestForKey(String keyId, String emailId,int duration){
-        Optional<User> userOpt = userRepository.findByEmail(emailId);
-        Optional<Key> keyOpt = keyRepository.findByKeyId(keyId);
-        if(userOpt.isPresent() && keyOpt.isPresent()){
-            if(keyOpt.get().getBorrowedBy() == null){
-                User user = userOpt.get();
-                Key key = keyOpt.get();
-                if(user.getRole()!= Role.CR){
-                    return "You are not authorized to borrow keys";
-                }
-                if(keyRepository.findByBorrowedBy(emailId).isPresent()){
-                    return "You have already borrowed a key, Please return the key to borrow another one";
-                }
-                if(!key.getStatus().equals("Available")){
-                    return "Key is not available";
-                }
-                KeyBorrow keyBorrow = new KeyBorrow();
-                keyBorrow.setKeyId(keyId);
-                keyBorrow.setBorrowerEmail(emailId);
-                keyBorrow.setDuration(duration);
-                keyBorrow.setRequestTime(new Date());
-                keyBorrow.setStatus("Pending");
-                keyRepository.save(key);
-                return "Key Borrow Requested Submitted Successfully!! Waiting For Admin`s Approval";
-            }
-        }
-        return "Key or User not found";
-    }
+//    public String requestForKey(String keyId, String emailId,int duration){
+//        Optional<User> userOpt = userRepository.findByEmail(emailId);
+//        Optional<Key> keyOpt = keyRepository.findByKeyId(keyId);
+//        if(userOpt.isPresent() && keyOpt.isPresent()){
+//            if(keyOpt.get().getBorrowedBy() == null){
+//                User user = userOpt.get();
+//                Key key = keyOpt.get();
+//                if(user.getRole()!= Role.CR){
+//                    return "You are not authorized to borrow keys";
+//                }
+//                if(keyRepository.findByBorrowedBy(emailId).isPresent()){
+//                    return "You have already borrowed a key, Please return the key to borrow another one";
+//                }
+//                if(!key.getStatus().equals("Available")){
+//                    return "Key is not available";
+//                }
+//                KeyBorrow keyBorrow = new KeyBorrow();
+//                keyBorrow.setKeyId(keyId);
+//                keyBorrow.setBorrowerEmail(emailId);
+//                keyBorrow.setDuration(duration);
+//                keyBorrow.setRequestTime(new Date());
+//                keyBorrow.setStatus("Pending");
+//                keyRepository.save(key);
+//                return "Key Borrow Requested Submitted Successfully!! Waiting For Admin`s Approval";
+//            }
+//        }
+//        return "Key or User not found";
+//    }
     public String approveKeyRequest(String keyId){
         Optional<KeyBorrow> requestOpt = keyBorrowRepository.findByKeyId(keyId);
         if(requestOpt.isPresent()){

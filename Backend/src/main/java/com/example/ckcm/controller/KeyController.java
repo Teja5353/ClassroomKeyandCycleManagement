@@ -43,9 +43,15 @@ public class KeyController {
         System.out.println(keyBorrowRepository.findByBorrowerEmail(email));
         return ResponseEntity.ok(keyBorrowRepository.findByBorrowerEmail(email));
     }
-    @PostMapping("/delete/{keyId}")
-    public ResponseEntity<?> deleteKey(@PathVariable String keyId){
-        keyRepository.deleteByKeyId(keyId);
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteKey(@RequestBody Key key){
+        keyService.deleteKey(key.getKeyId(),key.getLocation());
         return ResponseEntity.ok(Map.of("message", "Key deleted successfully"));
+    }
+
+    @GetMapping("/get-keys/{email}")
+    public ResponseEntity<?> getKeys(@PathVariable String email){
+        System.out.println(keyRepository.findByBorrowedBy(email));
+        return ResponseEntity.ok(keyRepository.findByBorrowedBy(email));
     }
 }

@@ -30,6 +30,7 @@ public class KeyBorrow {
     private LocalTime endTime;
     private String location;
     private String status = "Pending";
+    private String borrowFrom = "Admin";
     @Temporal(TemporalType.TIMESTAMP)
     private Date approvalTime;
 }

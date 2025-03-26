@@ -79,4 +79,8 @@ public class CycleController {
         cycleService.deleteCycle(cycleId);
         return ResponseEntity.ok(Map.of("message", "Cycle deleted successfully"));
     }
+    @GetMapping("/get-cycles/{email}")
+    public ResponseEntity<?> getCycles(@PathVariable String email){
+        return ResponseEntity.ok(cycleRepository.findByBorrowedBy(email));
+    }
 }

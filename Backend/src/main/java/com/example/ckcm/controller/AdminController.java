@@ -104,12 +104,10 @@ public class AdminController {
         }
         return ResponseEntity.badRequest().body(Map.of("message", "Request not found."));
     }
-
-    // ✅ Handle Borrow Request Submission (Trigger notification for admin)
     @PostMapping("/request-borrow")
     public ResponseEntity<?> createBorrowRequest(@RequestBody CycleBorrow borrowRequest) {
         Optional<Cycle> cycleOpt = cycleRepository.findByCycleId(borrowRequest.getCycleId());
-        Optional<CycleBorrow> borrowOpt = cycleBorrowRepository.findByCycleIdAndBorrowerEmailAndStatus(borrowRequest.getCycleId(),borrowRequest.getBorrowerEmail(),"Pending");
+        Optional<CycleBorrow> borrowOpt = cycleBorrowRepository.findByCycleIdAndBorrowerEmailAndStatus(borrowRequest.getCycleId(), borrowRequest.getBorrowerEmail(),"Approved");
         if(borrowOpt.isPresent() && borrowOpt.get().getStatus().equals("Approved")){
              return ResponseEntity.badRequest().body(Map.of("message", "Request not found."));
         }
@@ -212,8 +210,11 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Key is not available during the requested time.");
         }
         Optional<Key> keyOpt = keyRepository.findByKeyIdAndLocation(request.getKeyId(), request.getLocation());
-        Optional<KeyBorrow> borrowOpt = keyBorrowRepository.findByKeyId(request.getKeyId());
+        Optional<KeyBorrow> borrowOpt = keyBorrowRepository.findByKeyIdAndBorrowerEmailAndStatus(request.getKeyId(), request.getBorrowerEmail(), "Pending");
         if(keyOpt.isEmpty() || !keyOpt.get().getStatus().equals("Available")){
+            return ResponseEntity.badRequest().body("Key is Not Available get from CR");
+        }
+        if(borrowOpt.isPresent()){
             return ResponseEntity.badRequest().body("Key is Not Available get from CR");
         }
         Key key = keyOpt.get();
@@ -241,9 +242,10 @@ public class AdminController {
     @PostMapping("/approve-key/{id}")
     public ResponseEntity<?> approveKeyRequest(@PathVariable Long id){
         Optional<KeyBorrow> borrowOpt = keyBorrowRepository.findById(id);
+        System.out.println(borrowOpt);
         if(borrowOpt.isPresent() && borrowOpt.get().getStatus().equals("Pending")){
             KeyBorrow borrow = borrowOpt.get();
-            Optional<Key> keyOpt = keyRepository.findByKeyId(borrow.getKeyId());
+            Optional<Key> keyOpt = keyRepository.findByKeyIdAndLocation(borrow.getKeyId(),borrow.getLocation());
             if(keyOpt.isEmpty()){
                 return ResponseEntity.badRequest().body("key not found");
             }
@@ -251,6 +253,8 @@ public class AdminController {
             key.setBorrowedBy(borrow.getBorrowerEmail());
             key.setBorrowedAt(new Date());
             key.setStatus("Borrowed");
+            key.setStartTime(borrow.getStartTime());
+            key.setEndTime(borrow.getEndTime());
             keyRepository.save(key);
             borrow.setStatus("Approved");
             borrow.setApprovalTime(new Date());
@@ -269,7 +273,7 @@ public class AdminController {
         Optional<KeyBorrow> borrowOpt = keyBorrowRepository.findById(id);
         if(borrowOpt.isPresent()){
             KeyBorrow borrow = borrowOpt.get();
-            Optional<Key> keyOpt = keyRepository.findByKeyId(borrow.getKeyId());
+            Optional<Key> keyOpt = keyRepository.findByKeyIdAndLocation(borrow.getKeyId(),borrow.getLocation());
             if(keyOpt.isPresent()){
                 Key key = keyOpt.get();
                 key.setStatus("Available");
@@ -342,6 +346,8 @@ public class AdminController {
                 key.setBorrowedBy(null);
                 key.setBorrowedAt(null);
                 key.setStatus("Available");
+                key.setStartTime(null);
+                key.setEndTime(null);
                 keyRepository.save(key);
             }
 
@@ -357,7 +363,7 @@ public class AdminController {
     // ✅ Admin Denies Key Return
     @PostMapping("/deny-key-return/{id}")
     public ResponseEntity<?> denyKeyReturn(@PathVariable Long id) {
-        Optional<KeyBorrow> borrowRequestOpt = keyBorrowRepository.findById(id);
+        Optional<KeyBorrow> borrowRequestOpt = keyBorrowRepository.findByIdAndStatus(id,"Return Requested");
         if (borrowRequestOpt.isPresent() && "Return Requested".equals(borrowRequestOpt.get().getStatus())) {
             KeyBorrow borrowRequest = borrowRequestOpt.get();
             borrowRequest.setStatus("Return Denied");

@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface CycleRepository extends JpaRepository<Cycle,Long> {
     Optional<Cycle> findByCycleId(String cycleId);
     Optional<Cycle> findByQrCode(String qrCode);
-    Optional<Cycle> findByBorrowedBy(String email);
+    List<Cycle> findByBorrowedBy(String email);
     List<Cycle> findByStatus(String status);
     boolean existsByCycleId(String cycleId);
     List<Cycle> findAll();
