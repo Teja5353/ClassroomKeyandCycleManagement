@@ -3,35 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-  <script>
-    function validate() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const loginButton = document.getElementById("loginButton");
-      loginButton.disabled = !(email && password);
-    }
-  </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        .google-login {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: white;
+            background-color: #db4437;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        function validate() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const loginButton = document.getElementById("loginButton");
+            loginButton.disabled = !(email && password);
+        }
+    </script>
 </head>
 <body>
-  <h1>Login</h1>
-<form th:action="@{/auth/authenticate}" method="post">
-  <div>
-    <label for="email">Email:</label>
-    <input type="text" id="email" name="email" oninput="validate()">
-
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="text" id="password" name="password" oninput="validate()">
-  </div>
-  <div>
-    <button type="submit" id="loginButton" disabled>Login</button>
-  </div>
-  <div>
-    <a href="/oauth2/authorization/google">
-      Login With Google
-    </a>
-  </div>
-</form>
+    <div class="container">
+        <h1>Login</h1>
+        <form th:action="@{/auth/authenticate}" method="post">
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" oninput="validate()">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" oninput="validate()">
+            </div>
+            <div>
+                <button type="submit" id="loginButton" disabled>Login</button>
+            </div>
+        </form>
+        <a href="/oauth2/authorization/google" class="google-login">
+            Login With Google
+        </a>
+    </div>
 </body>
 </html>
