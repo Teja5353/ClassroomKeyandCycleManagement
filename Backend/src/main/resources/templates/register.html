@@ -3,29 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <title>Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin-top: 15px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
-<h1>Register</h1>
-<form th:action="@{/auth/register}" th:object="${user}" method="post">
-  <div>
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" th:field="*{firstName}" required>
+  <div class="container">
+    <h1>Register</h1>
+    <form th:action="@{/auth/register}" th:object="${user}" method="post">
+      <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}" required>
+      </div>
+      <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}" required>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required>
+      </div>
+      <div>
+        <button type="submit">Register</button>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" th:field="*{lastName}" required>
-  </div>
-  <div>
-    <label for="email">Email:</label>
-    <input type="email" id="email" th:field="*{email}" required>
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" th:field="*{password}" required>
-  </div>
-  <div>
-    <button type="submit">Register</button>
-  </div>
-</form>
 </body>
 </html>
