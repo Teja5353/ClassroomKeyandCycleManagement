@@ -8,19 +8,20 @@
       <div class="row w-100 justify-content-center mt-4"> 
         <!-- Available Cycles Section -->
         <div class="col-md-6 col-sm-12">
-          <h4 class="Allocated-h text-center">Available Resources</h4>
+          <h4 class="Allocated-h text-center">Allocated Resources</h4>
           <ul class="list-group allocated-cycles mx-auto">
-            <li *ngFor="let cycle of availableCycles" 
+            <span *ngIf="borrowedCycles.length === 0" class="text-center"><strong>No Resources Allocated!!</strong></span>
+            <li *ngFor="let cycle of borrowedCycles" 
                 class="list-group-item d-flex justify-content-between align-items-center">
-              Cycle - {{ cycle.cycleId }} At {{cycle.location}}
+              Cycle - {{ cycle.cycleId }}, Location: {{cycle.location}}, Borrowed on: {{ cycle.borrowedAt }}.
             </li>
           </ul>
         </div> 
 
         <!-- Button Section -->
         <div class="col-md-4 col-sm-12 d-flex flex-column align-items-center mt-3 button-div">
-          <button type="button" class="btn btn-primary w-100 mb-2" (click)="navigateToBorrowCycle()">Send Request</button>
-          <button type="button" class="btn btn-success w-100 mb-2" (click)="navigateToViewRequest()">View Request</button>
+          <button type="button" class="btn btn-primary w-100 mb-2" (click)="navigateToBorrowCycle()">Request Cycle</button>
+          <button type="button" class="btn btn-success w-100 mb-2" (click)="navigateToViewRequest()">View Requests</button>
           <button type="button" class="btn btn-danger w-100" (click)="navigateToReturnCycle()">Return Cycle</button>
         </div>
       </div> 

@@ -39,7 +39,15 @@ export class UserDashboardComponent implements OnInit {
       }
     );
   }
-
+  getHttpOptions() {
+    const token = localStorage.getItem('token');
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : ''
+      })
+    };
+  }
   loadAvailableCycles() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -47,7 +55,7 @@ export class UserDashboardComponent implements OnInit {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-  
+    
     this.http.get<any>("http://localhost:8082/userDashboard/available", { ...httpOptions, params: { email: this.email } })
       .subscribe(
         response => {
@@ -63,6 +71,22 @@ export class UserDashboardComponent implements OnInit {
         },
         error => console.error("❌ Error fetching available cycles", error)
       );
+  }
+  fetchBorrowedCycles(){
+    this.http.get<any>(`http://localhost:8082/cycles/get-cycle/${this.email}`,this.getHttpOptions()).subscribe(
+      response => {
+        if (response) {
+          if (Array.isArray(response)) {
+            this.borrowedCycles = response;
+          } else {
+            this.borrowedCycles = [response]; // ✅ Wrap single object in an array
+          }
+        } else {
+          this.borrowedCycles = [];
+        }
+      },
+      error => console.error("❌ Error fetching borrowed cycles", error)
+    )
   }
   navigateToBorrowCycle(){
     this.router.navigate(["/cycles/borrow"]);
