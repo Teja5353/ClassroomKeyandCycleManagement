@@ -34,7 +34,6 @@ public class AlertController {
             "message", "Notification set. You will receive an alert after " + duration + " minutes."
         ));
     }
-
     @Scheduled(fixedRate = 60000) // Runs every 1 minute
     public void checkAlerts() {
         LocalDateTime now = LocalDateTime.now();
@@ -49,4 +48,6 @@ public class AlertController {
             }
         });
     }
+
+   
 }
