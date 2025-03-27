@@ -2,6 +2,7 @@ package com.example.ckcm.controller;
 
 import com.example.ckcm.auth.AuthenticationRequest;
 import com.example.ckcm.auth.AuthenticationResponse;
+import com.example.ckcm.auth.RegisterRequest;
 import com.example.ckcm.entities.User;
 import com.example.ckcm.services.AuthenticationService;
 import com.example.ckcm.services.JwtService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,4 +60,17 @@ public class AuthenticationController {
         // ✅ Redirect to Angular frontend with token and role
         response.sendRedirect("http://localhost:4200?token=" + token + "&role=" + role+"&email="+email);
     }
+
+    // @PostMapping("/register")
+    // public String register(@ModelAttribute User user) {
+    //     RegisterRequest request = new RegisterRequest(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+    //     authenticationService.register(request);
+    //     return "redirect:/auth/login";
+    // }
+
+    // @GetMapping("/register")
+    // public String showRegistrationForm(Model model) {
+    //     model.addAttribute("user", new User());
+    //     return "register";
+    // }
 }
